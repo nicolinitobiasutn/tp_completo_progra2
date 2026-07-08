@@ -1,0 +1,88 @@
+import funciones
+
+def pedir_credenciales():
+    usuario = funciones.quitar_espacios(input("Usuario: "))
+    contrasenia = funciones.quitar_espacios(input("Contraseña: "))
+    return usuario, contrasenia
+
+def pedir_opcion_menu():
+    return funciones.quitar_espacios(input("Seleccione una opción: "))
+
+def pedir_rol_admin():
+    rol = funciones.primera_mayuscula(funciones.quitar_espacios(input("Ingrese el rol (Jugador / Desarrolladora): ")))
+    while rol != "Jugador" and rol != "Desarrolladora":
+        rol = funciones.primera_mayuscula(funciones.quitar_espacios(input("Rol inválido. Reingrese (Jugador / Desarrolladora): ")))
+    return rol
+
+def pedir_nuevo_username(lista_usuarios, buscar_usuario_func):
+    while True:
+        username = funciones.quitar_espacios(input("Nombre de usuario (mínimo 3 caracteres): "))
+        if len(username) < 3:
+            print("Error: El usuario debe poseer al menos 3 caracteres.")
+            continue
+        if buscar_usuario_func(lista_usuarios, username) is not None:
+            print("Error: El usuario ya está registrado en el sistema.")
+        else:
+            return username
+
+def pedir_nueva_contrasenia():
+    contrasenia = funciones.quitar_espacios(input("Contraseña (mínimo 6 caracteres): "))
+    while len(contrasenia) < 6:
+        contrasenia = funciones.quitar_espacios(input("Contraseña muy corta. Mínimo 6 caracteres: "))
+    return contrasenia
+
+def pedir_datos_perfil_jugador():
+    nombre = funciones.quitar_espacios(input("Nombre y Apellido: "))
+    pais = funciones.quitar_espacios(input("País: "))
+    juego_fav = funciones.quitar_espacios(input("Juego Favorito: "))
+    return nombre, pais, juego_fav
+
+def pedir_confirmacion(mensaje):
+    respuesta = funciones.quitar_espacios(input(f"{mensaje} (S/N): "))
+    return funciones.cadenas_iguales(respuesta, "S")
+
+def pedir_usuario_baja():
+    return funciones.quitar_espacios(input("\nIngrese el nombre de usuario exacto para dar de baja: "))
+
+# --- Inputs del menú Jugador ---
+def pedir_nombre_desarrolladora():
+    return funciones.quitar_espacios(input("Ingrese el nombre de la desarrolladora a explorar: "))
+
+def pedir_metodo_pago():
+    print("\n---- METODO DE PAGO ----")
+    print("1. Tarjeta de Credito")
+    print("2. MercadoPago")
+    print("3. Ninguno")
+    opcion = pedir_opcion_menu()
+    if opcion == "1":
+        return "Tarjeta de Credito"
+    elif opcion == "2":
+        return "MercadoPago"
+    else:
+        return None
+
+def pedir_opcion_juego(cantidad):
+    print("0. Cancelar")
+    opcion = pedir_opcion_menu()
+    while funciones.es_numero(opcion) == False or int(opcion) < 0 or int(opcion) > cantidad:
+        print("Opción inválida.")
+        opcion = pedir_opcion_menu()
+    return int(opcion)
+
+# --- Inputs del menu Desarrolladora ---
+def pedir_nombre_juego():
+    nombre = funciones.quitar_espacios(input("Nombre del juego: "))
+    while len(nombre) == 0:
+        nombre = funciones.quitar_espacios(input("El nombre no puede estar vacio. Reingrese: "))
+    return nombre
+
+def pedir_precio_juego():
+    precio_texto = funciones.quitar_espacios(input("Precio del juego: "))
+    while True:
+        try:
+            precio = float(precio_texto)
+            if precio > 0:
+                return precio
+        except ValueError:
+            pass
+        precio_texto = funciones.quitar_espacios(input("Precio invalido. Reingrese un numero mayor a 0: "))

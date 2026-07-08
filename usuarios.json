@@ -1,0 +1,97 @@
+import funciones
+
+def mostrar_bienvenida():
+    print("=======================================")
+    print("  BIENVENIDO A LA ENTREGA FINAL JSON   ")
+    print("=======================================")
+    print("Ecosistema modular de videojuegos.\n")
+
+def mostrar_error_credenciales():
+    print("Error: Credenciales inexistentes o incorrectas.\n")
+
+def mostrar_error_longitud():
+    print("Error: El formato de usuario (min 3) o clave (min 6) es incorrecto.\n")
+
+def mostrar_perfil_jugador(u, biblioteca):
+    print(f"\n--- PERFIL DE JUGADOR ---")
+    print(f"Usuario: {u['usuario']}")
+    print(f"Nombre: {u.get('nombre', 'N/A')}")
+    print(f"País: {u.get('pais', 'N/A')}")
+    print(f"Juego Favorito: {u.get('juego_favorito', 'N/A')}")
+    print(f"Horas registradas: {u.get('horas_jugadas', 0)} hs")
+    if biblioteca:
+        print(f"Biblioteca actual: {funciones.unir_nombres_juegos(biblioteca)}")
+    else:
+        print("Biblioteca actual: Sin juegos comprados.")
+
+def mostrar_perfil_desarrolladora(u):
+    print("\n--- PERFIL DE DESARROLLADORA ---")
+    print(f"Usuario: {u['usuario']}")
+    print(f"Rol: {u['rol']}")
+    if "nombre" in u:
+        print(f"Nombre: {u['nombre']}")
+    if "pais" in u:
+        print(f"Pais: {u['pais']}")
+
+def mostrar_matriz_ventas(matriz, desarrolladora):
+    print(f"\n--- MATRIZ COMERCIAL: {funciones.a_mayuscula(desarrolladora)} ---")
+    if not matriz:
+        print("No se encontraron registros comerciales para esta empresa.")
+        return
+    print(f"{'Precio Unitario':<15} | {'Copias Vendidas':<15} | {'Ingresos Totales':<18}")
+    print("-" * 55)
+    for fila in matriz:
+        print(f"${fila[0]:<14.2f} | {fila[1]:<15} | ${fila[2]:<17.2f}")
+
+def mostrar_top_juegos(top_5):
+    print("\n--- RANKING: TOP 5 VIDEOJUEGOS ---")
+    if not top_5:
+        print("No hay videojuegos cargados en el sistema.")
+        return
+    print(f"{'Pos':<4} | {'Título':<25} | {'Desarrolladora':<20} | {'Copias Vendidas':<10}")
+    print("-" * 68)
+    for pos, j in enumerate(top_5, start=1):
+        print(f"{pos:<4} | {j['nombre']:<25} | {j['desarrolladora']:<20} | {j['copias_vendidas']:<10}")
+
+def mostrar_lista_usuarios_simple(lista_usuarios):
+    print("\nListado actual de credenciales:")
+    for u in lista_usuarios:
+        print(f" * [{u['role_placeholder'] if 'role_placeholder' in u else u['rol']}] User: {u['usuario']}")
+
+def mostrar_info_sistema_completa(lista_usuarios, filtrar_por_rol_func):
+    print("\n=== INFORMACIÓN DE CONTROL DEL SISTEMA ===")
+    print("Proyecto: Plataforma de Distribución Digital (Entrega Final)")
+    print("Infraestructura: Persistencia JSON nativa y Modularidad Descentralizada.")
+
+    for r in ["Jugador", "Desarrolladora", "Administrador"]:
+        print(f"\nIntegrantes con Rol '{r}':")
+        filtrados = filtrar_por_rol_func(lista_usuarios, r)
+        if not filtrados:
+            print("  (Ninguno registrado)")
+        for f in filtrados:
+            print(f"  -> {f['usuario']}")
+
+# --- Prints del menú Jugador ---
+def mostrar_catalogo(juegos_dev, nombre_desarrolladora):
+    print(f"\n--- CATALOGO DE {nombre_desarrolladora} ---")
+    contador = 1
+    for j in juegos_dev:
+        print(f"{contador}. {j['nombre']} - ${j['precio']}")
+        contador = contador + 1
+
+def mostrar_resumen_compra(juego, desarrolladora, metodo_pago):
+    print("\n--- RESUMEN DE COMPRA ---")
+    print(f"Juego: {juego['nombre']}")
+    print(f"Desarrolladora: {desarrolladora['usuario']}")
+    print(f"Precio: ${juego['precio']}")
+    print(f"Método de pago: {metodo_pago}")
+
+def mostrar_biblioteca_jugador(biblioteca):
+    print("\n--- MI BIBLIOTECA ---")
+    if not biblioteca:
+        print("Error: no tenés ningún juego en tu biblioteca.")
+        return
+    for compra in biblioteca:
+        print(f"- {compra['juego']} | Desarrolladora: {compra['desarrolladora']} | "
+              f"Precio pagado: ${compra['precio']} | Método de pago: {compra['metodo_pago']} | "
+              f"Fecha: {compra['fecha']}")

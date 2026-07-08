@@ -1,0 +1,12 @@
+[
+    {
+        "usuario": "adminsteam",
+        "contrasenia": "admin999",
+        "rol": "Administrador"
+    },
+    {
+        "usuario": "indiedev",
+        "contrasenia": "clave123",
+        "rol": "Desarrolladora"
+    }
+]
